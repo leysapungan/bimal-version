@@ -1,0 +1,19 @@
+
+<input type="text"  placeholder="New item.." [(ngModel)]="todoTitle" (keyup.enter)="addTodo()">
+<button class="btn btn-primary" (click)="addTodo()"><i class="fas fa-plus-circle"></i></button>
+<div class="form-inline" *ngFor="let todo of todos">
+    <div class="form-inline"  >
+        <input type="checkbox" [(ngModel)]="todo.completed">
+        <br/><br/>
+        <div *ngIf="!todo.editing; else editingTodo" [ngClass]= " {'text-success': todo.completed}"
+         (dblclick)="editTodo(todo)"> {{ todo.title }}</div>
+        <ng-template #editingTodo>
+            <input type="text" [(ngModel)]="todo.title" (blur)="doneEdit(todo)"
+             (keyup.enter)="doneEdit(todo)" (keyup.esc)="cancelEdit(todo)" autofocus>
+        </ng-template>
+    </div>
+    <br/><br/>
+    <div  (click)="deleteTodo(todo.id)" >
+        <button class="btn btn-danger" ><i class="fas fa-backspace"></i></button>
+    </div> <br/><br/>
+    <app-subtask (subEvent)="subMessage=$event"></app-subtask>
